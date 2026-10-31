@@ -6,4 +6,4 @@ const supabasePublishableKey = "sb_publishable_qWykKmOmguTV1aRS76RDkQ_Nw0zC2OE";
 const sb = supabase.createClient(supabaseUrl, supabasePublishableKey);
 
 // Storage > Buckets에서 생성한 공개 버킷의 정확한 이름으로 변경하세요.
-const BOOK_IMAGE_BUCKET = "book-images";
+const BOOK_IMAGE_BUCKET = "imange";
