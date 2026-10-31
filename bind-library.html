@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIND 콘텐츠 상품 라이브러리 | madang 테스트</title>
+<style>
+:root{color-scheme:light;--ink:#18202d;--sub:#657084;--line:#e6e9ef;--bg:#f6f7f8;--accent:#252c3a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Pretendard,"Malgun Gothic",Arial,sans-serif}button,input,select{font:inherit}
+a{color:inherit}.shell{max-width:1460px;margin:auto;padding:32px 30px 80px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}.wordmark{font-size:14px;letter-spacing:.24em;font-weight:800}.back{font-size:12px;color:var(--sub)}
+.hero{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:24px}.hero h1{font-size:clamp(27px,4vw,40px);line-height:1.1;letter-spacing:-.045em;margin:0 0 11px}.hero p{margin:0;color:var(--sub);font-size:14px}.demo{padding:11px 14px;background:#fff4dc;border:1px solid #f1d9aa;border-radius:9px;font-size:12px;max-width:430px;line-height:1.65}
+.layout{display:grid;grid-template-columns:238px 1fr;gap:24px}.sidebar,.main{min-width:0}.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:19px;margin-bottom:14px}
+.s-title{font-size:12px;font-weight:800;letter-spacing:.02em;margin:0 0 16px}.search{width:100%;height:39px;padding:0 12px;border:1px solid var(--line);border-radius:8px;outline:none}
+.brand-list{max-height:320px;overflow:auto;margin-top:10px;display:grid;gap:2px}.brand-option{width:100%;text-align:left;cursor:pointer;background:transparent;border:0;border-radius:7px;padding:8px 9px;font-size:12px;color:#475061}.brand-option:hover,.brand-option.active{background:#eef0f4;color:#151d2b;font-weight:800}.brand-option img{width:50px;height:18px;object-fit:contain;vertical-align:middle;margin-right:8px}
+.category-list{display:grid;gap:4px}.cat-btn{padding:11px 12px;border:0;background:transparent;text-align:left;border-radius:8px;cursor:pointer;color:#4d5869;font-size:13px;display:flex;justify-content:space-between}.cat-btn.active,.cat-btn:hover{background:#242c39;color:white}
+.toolbar{background:white;border:1px solid var(--line);border-radius:14px;padding:19px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.toolbar-title{font-size:19px;font-weight:800;letter-spacing:-.02em}.small{font-size:12px;color:var(--sub)}.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.controls select,.controls input{height:38px;background:white;border:1px solid var(--line);border-radius:8px;padding:0 10px;font-size:12px}.controls input{width:170px}.plain-btn{border:1px solid var(--line);background:white;border-radius:8px;padding:9px 13px;cursor:pointer;font-size:12px}.plain-btn:hover{border-color:#9fa8b7}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.product{background:white;border:1px solid var(--line);border-radius:12px;overflow:hidden;min-width:0}
+.photo{width:100%;aspect-ratio:3/4;background:#e9ecef;position:relative;overflow:hidden;display:grid;place-items:center}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}.photo-fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:12px;font-size:12px;color:var(--sub)}
+.stock-badge{position:absolute;top:10px;left:10px;padding:6px 8px;background:rgba(255,255,255,.96);font-size:10px;border-radius:5px;font-weight:700}
+.info{padding:13px}.brand{font-size:11px;font-weight:800;letter-spacing:.03em}.product-name{font-size:13px;font-weight:600;margin:8px 0 9px;min-height:34px;line-height:1.4}.detail{font-size:11px;color:var(--sub);line-height:1.8}.price{font-size:14px;font-weight:800;margin-top:6px}.card-actions{display:flex;gap:8px;margin-top:12px}.pick{flex:1;cursor:pointer;background:#fff;color:var(--ink);border:1px solid var(--line);padding:9px 8px;font-size:11px;border-radius:7px}.pick.saved{background:#212a3a;color:white;border-color:#212a3a}
+.empty{background:white;border:1px solid var(--line);padding:55px 20px;text-align:center;border-radius:12px;color:var(--sub)}.bottom{display:flex;justify-content:center;margin-top:22px}.bottom button{padding:11px 30px;border:1px solid var(--line);background:#fff;cursor:pointer;border-radius:8px}
+.selection{position:sticky;bottom:16px;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:24px;background:#1f2937;color:#fff;border-radius:13px;padding:14px 18px;box-shadow:0 12px 32px #0002}.selection strong{font-size:13px}.selection button{cursor:pointer;padding:10px 14px;border:0;border-radius:7px;background:#fff;color:#111827;font-size:12px;font-weight:700}.selection .ghost{background:#374151;color:#fff}
+@media(max-width:1180px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:830px){.layout{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:1fr 1fr;gap:12px}.sidebar .panel{margin:0}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{display:block}.demo{margin-top:14px;max-width:none}}
+@media(max-width:500px){.shell{padding:20px 12px 60px}.sidebar{display:block}.sidebar .panel{margin-bottom:12px}.brand-list{max-height:170px}.grid{gap:10px}.info{padding:10px}.toolbar{padding:14px}.controls input{width:100%}.controls{width:100%}.product-name{font-size:12px}.selection{flex-wrap:wrap}}
+</style></head><body>
+<div class="shell"><div class="top"><span class="wordmark">BIND / CONTENT PICK</span><a class="back" href="./index.html">madang 돌아가기 ↗</a></div>
+<header class="hero"><div><h1>재고 상품 이미지 라이브러리</h1><p>브랜드와 카테고리만 선택하면 상품 이미지가 펼쳐지는 콘텐츠 기획용 갤러리</p></div>
+<div class="demo"><strong>데모 모드</strong> · ERP SQL 및 상품 이미지 매칭은 아직 연결하지 않았습니다. 아래 재고·가격·품번·상품명은 가상 데이터이며, 사진은 실제 브랜드 상품이 아닌 의류 예시 이미지입니다. 인스타 콘텐츠에 그대로 사용하지 마세요.</div></header>
+<div class="layout">
+<aside class="sidebar">
+<section class="panel"><h2 class="s-title">카테고리</h2><div class="category-list" id="categoryList"></div></section>
+<section class="panel"><h2 class="s-title">입점 브랜드 <span id="brandCount"></span></h2><input class="search" id="brandSearch" placeholder="브랜드 찾기" aria-label="브랜드 검색"><div class="brand-list" id="brandList"></div></section>
+</aside>
+<main class="main">
+<div class="toolbar"><div><div class="toolbar-title" id="currentTitle">전체 상품</div><span class="small" id="resultInfo">불러오는 중</span></div>
+<div class="controls"><input id="keyword" type="search" placeholder="상품명·품번 검색" aria-label="상품명 품번 검색"><select id="stockFilter" aria-label="재고 필터"><option value="1">재고 1개 이상</option><option value="10">재고 10개 이상</option><option value="30">재고 30개 이상</option><option value="50">재고 50개 이상</option></select><select id="sort" aria-label="정렬"><option value="stock">재고 많은 순</option><option value="brand">브랜드명 순</option><option value="price">가격 높은 순</option></select><button type="button" class="plain-btn" id="reset">초기화</button></div></div>
+<div class="grid" id="grid"></div><div class="bottom" id="moreArea"><button type="button" id="more">더 보기</button></div>
+</main></div>
+<div class="selection" id="selection" hidden><strong id="selectionCount">선택된 상품 0개</strong><div><button class="ghost" id="clearSelection" type="button">선택 해제</button> <button id="download" type="button">선택 상품 CSV 다운로드</button></div></div>
+</div>
+<script>
+const BRANDS=[{"name":"9999ARCHIVE","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/9999archive.svg"},{"name":"ambler","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ambler.svg"},{"name":"ames","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ames.svg"},{"name":"avandress","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/avandress.svg"},{"name":"bendavis","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/bendavis.svg"},{"name":"bp2-disorder","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/bp2-disorder.svg"},{"name":"cavish","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/cavish.svg"},{"name":"code-graphy","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/code-graphy.svg"},{"name":"compagno","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/compagno.svg"},{"name":"covernat","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/covernat.svg"},{"name":"dandel","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/dandel.svg"},{"name":"dimitri-black","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/dimitri-black.svg"},{"name":"ESCAPEFROM","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ESCAPEFROM.svg"},{"name":"Fallet","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/Fallett.svg"},{"name":"Fancy Club","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/fancy-club.svg"},{"name":"fdr","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/fdr.svg"},{"name":"ghost republic","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ghost-republic.svg"},{"name":"free mario","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/free-mario.svg"},{"name":"hanes","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/hanes.svg"},{"name":"jeep","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/jeep.svg"},{"name":"kims","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/kims.svg"},{"name":"lee","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/lee.svg"},{"name":"lenee b","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/lenee-b.svg"},{"name":"lmr","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/lmr.svg"},{"name":"mainbooth","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/mainbooth.svg"},{"name":"MASMARULEZ","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/MASMARULEZ.svg"},{"name":"MUCENT","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/MUCENT.svg"},{"name":"mydeepblue","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/mydeepblue.svg"},{"name":"neikidnis","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/neikidnis.svg"},{"name":"nomanual","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/nomanual.svg"},{"name":"obsker","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/obsker.svg"},{"name":"odd pearl","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/oddpearl.svg"},{"name":"ogarp","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ogarp.svg"},{"name":"ordinary holiday","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ORDINARY-HOLIDAY.svg"},{"name":"PAGESIISII","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/PAGESIISII.svg"},{"name":"phypsdept","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/phypsdept.svg"},{"name":"RUNNINGHIGH","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/RUNNINGHIGH.svg"},{"name":"SANRIN","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/SANRIN.svg"},{"name":"SECONDSALT","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/SECONDSALT.svg"},{"name":"SORANO","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/SORANO.svg"},{"name":"STOCKHOLM SYNDROME","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/STOCKHOLM-SYNDROME.svg"},{"name":"TANSANMAGNESIUM","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/TANSANMAGNESIUM.svg"},{"name":"THRASHER","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/THRASHER.svg"},{"name":"ticket to the moon","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ticket-to.svg"},{"name":"video","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/video.svg"},{"name":"VIVACIOUS","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/VIVACIOUS.svg"},{"name":"wacky willy","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/wacky-willy.svg"},{"name":"wednesday","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/wednesday.svg"},{"name":"yale","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/yale.svg"},{"name":"YOSEMITE","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/YOSEMITE.svg"}];
+const IMAGES={"바지":["https://images.unsplash.com/photo-1754555009601-498e9873197e?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1714143164072-7646ef5cb24d?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1714143136367-7bb68f3f0669?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=600&q=80"],"아우터":["https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=600&q=80"],"상의":["https://images.unsplash.com/photo-1693901257178-b5fcb8f036a8?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=600&q=80"],"원피스":["https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&q=80"],"잡화":["https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80"]};
+const PRODUCT_NAMES={"바지":["와이드 데님 팬츠","카고 팬츠","코튼 스트레이트 팬츠","워싱 데님 팬츠"],"아우터":["라이트 다운 점퍼","나일론 윈드브레이커","캐주얼 재킷"],"상의":["로고 스웨트셔츠","베이직 반팔 티셔츠","집업 후디"],"원피스":["캐주얼 원피스"],"잡화":["캔버스 백","데일리 액세서리"]};
+const CATEGORIES=["전체","바지","아우터","상의","원피스","잡화"];
+// 데이터와 이미지가 외부에서 이미 매칭되어 있다는 가정의 가상 샘플.
+// 실제 연동 시 이 배열을 ERP SQL 스냅샷 + 승인된 이미지 매핑 결과로 교체합니다.
+const ITEMS=BRANDS.flatMap((b,bi)=>["바지","아우터","상의","잡화"].map((category,ci)=>{
+ const names=PRODUCT_NAMES[category],images=IMAGES[category];
+ return {id:bi*10+ci+1,brand:b.name,logo:b.logo,category,
+ name:names[(bi+ci)%names.length],sku:"DEMO-"+String(bi+1).padStart(2,"0")+"-"+String(ci+1).padStart(2,"0"),
+ stock:((bi*17+ci*13+11)%74)+1,price:(Math.floor(((bi*11+ci*7)%16+3)*9900/1000)*1000),
+ image:images[(bi+ci)%images.length],source:"샘플 이미지 · 실제 상품 매칭 아님"};}));
+let selectedBrand="전체",selectedCategory="전체",visible=24;
+const picked=new Set();
+const q=id=>document.getElementById(id);
+const won=n=>new Intl.NumberFormat("ko-KR").format(n)+"원";
+function filterItems(){
+ const term=q("keyword").value.trim().toLocaleLowerCase();
+ const min=Number(q("stockFilter").value);
+ const filtered=ITEMS.filter(x=>(selectedBrand==="전체"||x.brand===selectedBrand)&&(selectedCategory==="전체"||x.category===selectedCategory)&&x.stock>=min&&(!term||(x.name+" "+x.sku+" "+x.brand).toLocaleLowerCase().includes(term)));
+ const sort=q("sort").value;
+ filtered.sort((a,b)=>sort==="brand"?a.brand.localeCompare(b.brand):sort==="price"?b.price-a.price:b.stock-a.stock);
+ return filtered;
+}
+function element(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
+function renderFilters(){
+ const cats=q("categoryList");cats.replaceChildren();
+ for(const cat of CATEGORIES){const btn=element("button","cat-btn"+(cat===selectedCategory?" active":""),cat);btn.type="button";const count=cat==="전체"?ITEMS.length:ITEMS.filter(x=>x.category===cat).length;btn.append(element("span","",String(count)));btn.onclick=()=>{selectedCategory=cat;visible=24;render();};cats.append(btn);}
+ const filter=q("brandSearch").value.trim().toLocaleLowerCase();
+ const list=q("brandList");list.replaceChildren();q("brandCount").textContent="("+BRANDS.length+")";
+ const all=element("button","brand-option"+(selectedBrand==="전체"?" active":""),"전체 브랜드");all.type="button";all.onclick=()=>{selectedBrand="전체";visible=24;render();};list.append(all);
+ for(const b of BRANDS.filter(x=>x.name.toLowerCase().includes(filter))){
+ const btn=element("button","brand-option"+(selectedBrand===b.name?" active":""));btn.type="button";btn.textContent=b.name;btn.onclick=()=>{selectedBrand=b.name;visible=24;render();};list.append(btn);
+ }
+}
+function renderCards(){
+ const items=filterItems();q("currentTitle").textContent=(selectedCategory==="전체"?"전체 상품":selectedCategory)+(selectedBrand==="전체"?"":" · "+selectedBrand);
+ q("resultInfo").textContent=items.length+"개 상품 · ERP 연동 전 가상 샘플";
+ const grid=q("grid");grid.replaceChildren();
+ if(!items.length)grid.append(element("div","empty","조건에 맞는 상품이 없습니다."));
+ for(const p of items.slice(0,visible)){
+ const card=element("article","product");
+ const photo=element("div","photo"),img=document.createElement("img");
+ img.loading="lazy";img.alt="샘플 의류 사진 (실제 "+p.brand+" 상품 아님)";
+ const fallback=element("div","photo-fallback","이미지를 불러올 수 없습니다");
+ img.onerror=()=>{img.style.display="none";fallback.style.display="flex";};
+ img.src=p.image;photo.append(img,fallback,element("span","stock-badge","가상 재고 "+p.stock));
+ const info=element("div","info");
+ info.append(element("div","brand",p.brand),element("div","product-name",p.name),element("div","detail",p.category+" · "+p.sku),element("div","price",won(p.price)));
+ const actions=element("div","card-actions"),pick=element("button","pick"+(picked.has(p.id)?" saved":""),picked.has(p.id)?"✓ 콘텐츠 후보 선택됨":"＋ 콘텐츠 후보 담기");
+ pick.type="button";pick.onclick=()=>{if(picked.has(p.id))picked.delete(p.id);else picked.add(p.id);renderCards();};
+ actions.append(pick);info.append(actions);card.append(photo,info);grid.append(card);
+ }
+ q("moreArea").hidden=visible>=items.length;updateSelected();
+}
+function updateSelected(){q("selection").hidden=picked.size===0;q("selectionCount").textContent="콘텐츠 후보 "+picked.size+"개 선택";}
+function render(){renderFilters();renderCards();}
+q("brandSearch").addEventListener("input",renderFilters);
+for(const key of ["keyword","stockFilter","sort"])q(key).addEventListener(key==="keyword"?"input":"change",()=>{visible=24;renderCards();});
+q("more").onclick=()=>{visible+=24;renderCards();};
+q("reset").onclick=()=>{selectedCategory="전체";selectedBrand="전체";visible=24;q("keyword").value="";q("brandSearch").value="";q("stockFilter").value="1";q("sort").value="stock";render();};
+q("clearSelection").onclick=()=>{picked.clear();renderCards();};
+q("download").onclick=()=>{
+ const rows=ITEMS.filter(x=>picked.has(x.id)),header=["브랜드","카테고리","상품명","품번","재고(가상)","가격(가상)","샘플이미지URL","구분"];
+ const csv=[header,...rows.map(x=>[x.brand,x.category,x.name,x.sku,x.stock,x.price,x.image,"가상 샘플"])]
+ .map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\r\n");
+ const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="bind_content_demo_selection.csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+render();
+</script></body></html>
