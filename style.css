@@ -1,0 +1,240 @@
+:root {
+  color: #1f2937;
+  background: #f6f7fb;
+  font-family: "Malgun Gothic", "Apple SD Gothic Neo", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.page-container {
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 56px 0 72px;
+}
+
+.page-header {
+  margin-bottom: 30px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #3563e9;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+}
+
+.page-header > p:last-child {
+  margin: 12px 0 0;
+  color: #64748b;
+}
+
+.search-section {
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid #e4e8f0;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgb(15 23 42 / 5%);
+}
+
+.auth-section {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(0, 1.2fr);
+  gap: 18px 30px;
+  align-items: start;
+  margin-bottom: 18px;
+  padding: 22px;
+  background: #eef3ff;
+  border: 1px solid #d7e1ff;
+  border-radius: 14px;
+}
+
+.auth-heading h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.auth-heading p,
+.auth-message {
+  margin: 8px 0 0;
+  color: #52627a;
+  font-size: 0.92rem;
+}
+
+.auth-form {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.auth-form label {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.auth-buttons {
+  display: flex;
+  grid-column: 2;
+  gap: 10px;
+}
+
+.secondary-button {
+  background: #ffffff;
+  border: 1px solid #aab8d0;
+  color: #334155;
+}
+
+.secondary-button:hover {
+  background: #f1f5f9;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.auth-message {
+  grid-column: 1 / -1;
+  min-height: 20px;
+}
+
+.auth-message.error {
+  color: #b42318;
+}
+
+.search-form label {
+  display: block;
+  margin-bottom: 9px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.search-controls {
+  display: flex;
+  gap: 10px;
+}
+
+input,
+button {
+  min-height: 44px;
+  border-radius: 8px;
+  font: inherit;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 13px;
+  border: 1px solid #cbd5e1;
+}
+
+input:focus {
+  outline: 3px solid rgb(53 99 233 / 22%);
+  border-color: #3563e9;
+}
+
+button {
+  padding: 0 20px;
+  border: 0;
+  background: #3563e9;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #254fc9;
+}
+
+.status-message {
+  min-height: 24px;
+  margin: 22px 0 14px;
+  color: #475569;
+}
+
+.status-message.error {
+  color: #b42318;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+.book-card {
+  display: flex;
+  min-height: 190px;
+  flex-direction: column;
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid #e4e8f0;
+  border-radius: 14px;
+}
+
+.book-card h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.book-author {
+  margin: 10px 0;
+  color: #64748b;
+}
+
+.book-price {
+  margin: auto 0 0;
+  color: #1d4ed8;
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+
+.purchase-controls { display: flex; gap: 8px; align-items: center; margin-top: 18px; }
+.purchase-controls label { color: #475569; font-size: 0.88rem; font-weight: 700; }
+.quantity-input { width: 64px; min-height: 38px; padding: 0 6px; }
+.purchase-button { min-height: 38px; padding: 0 12px; font-size: 0.9rem; }
+.orders-section { margin-top: 48px; }
+.orders-section h2 { margin: 0; }
+.purchase-message, .orders-message { min-height: 22px; margin: 10px 0; color: #475569; }
+.purchase-message.error, .orders-message.error { color: #b42318; }
+.orders-list { display: grid; gap: 10px; }
+.order-card { display: grid; grid-template-columns: 1fr auto; gap: 5px 20px; padding: 17px 20px; background: #ffffff; border: 1px solid #e4e8f0; border-radius: 10px; }
+.order-card h3, .order-card p { margin: 0; }
+.order-card p { color: #52627a; font-size: 0.92rem; }
+.order-amount { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: #1d4ed8 !important; font-weight: 700; }
+
+@media (max-width: 480px) {
+  .page-container {
+    width: min(100% - 24px, 1100px);
+    padding-top: 36px;
+  }
+
+  .search-controls {
+    flex-direction: column;
+  }
+
+  .auth-section,
+  .auth-form {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-buttons {
+    grid-column: auto;
+  }
+
+  .purchase-controls { flex-wrap: wrap; }
+  .order-card { grid-template-columns: 1fr; }
+  .order-amount { grid-column: auto; grid-row: auto; }
+}
