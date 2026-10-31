@@ -16,6 +16,7 @@ const purchaseMessage = document.querySelector("#purchaseMessage");
 
 let currentUserId = null;
 let ordersRequestVersion = 0;
+let isLoggedIn = false;
 
 function setMessage(element, message, isError = false) {
   element.textContent = message;
@@ -35,7 +36,8 @@ function setAuthButtonsDisabled(isDisabled) {
 }
 
 function updateAuthScreen(session) {
-  const isLoggedIn = Boolean(session);
+  isLoggedIn = Boolean(session);
+  document.querySelectorAll(".cover-upload").forEach((element) => { element.hidden = !isLoggedIn; });
   authForm.hidden = isLoggedIn;
   signOutButton.hidden = !isLoggedIn;
   loginInfo.textContent = isLoggedIn ? `로그인됨: ${session.user.email}` : "로그인하면 회원 기능을 이용할 수 있습니다.";
@@ -164,6 +166,72 @@ function createPurchaseControls(book) {
   return controls;
 }
 
+// 도서별 표지 이미지는 Supabase Storage의 covers/<도서ID> 경로에 저장합니다.
+function addBookCover(card, book) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "book-cover-wrapper";
+
+  const img = document.createElement("img");
+  img.className = "book-cover";
+  img.alt = `${book.title} 표지`;
+  img.loading = "lazy";
+  img.hidden = true;
+
+  const placeholder = document.createElement("p");
+  placeholder.className = "book-cover-placeholder";
+  placeholder.textContent = "등록된 도서 이미지가 없습니다.";
+
+  const { data } = sb.storage.from(BOOK_IMAGE_BUCKET).getPublicUrl(`covers/${book.id}`);
+  img.onload = () => { img.hidden = false; placeholder.hidden = true; };
+  img.onerror = () => { img.hidden = true; placeholder.hidden = false; };
+  // 같은 경로로 교체 업로드했을 때 캐시된 표지가 남지 않도록 합니다.
+  img.src = data.publicUrl;
+  wrapper.append(img, placeholder);
+  card.append(wrapper);
+
+  const upload = document.createElement("div");
+  upload.className = "cover-upload";
+  upload.hidden = !isLoggedIn;
+  const label = document.createElement("label");
+  label.textContent = "표지 이미지 (JPG, PNG, WebP · 최대 5MB)";
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/jpeg,image/png,image/webp";
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = "이미지 업로드";
+  const message = document.createElement("p");
+  message.className = "cover-upload-message";
+  button.addEventListener("click", async () => {
+    const file = input.files?.[0];
+    if (!currentUserId) { message.textContent = "로그인 후 업로드할 수 있습니다."; return; }
+    if (!file) { message.textContent = "이미지 파일을 선택해 주세요."; return; }
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      message.textContent = "JPG, PNG, WebP 파일만 가능합니다."; return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      message.textContent = "파일 크기는 5MB 이하로 선택해 주세요."; return;
+    }
+    button.disabled = true;
+    message.textContent = "업로드 중입니다.";
+    try {
+      const { error } = await sb.storage.from(BOOK_IMAGE_BUCKET).upload(
+        `covers/${book.id}`, file, { upsert: true, contentType: file.type, cacheControl: "60" }
+      );
+      if (error) throw error;
+      img.src = `${data.publicUrl}?v=${Date.now()}`;
+      message.textContent = "이미지가 등록되었습니다.";
+      input.value = "";
+    } catch (error) {
+      message.textContent = `업로드 실패: ${error.message}`;
+    } finally {
+      button.disabled = false;
+    }
+  });
+  upload.append(label, input, button, message);
+  card.append(upload);
+}
+
 function showBooks(books) {
   bookList.replaceChildren();
   books.forEach((book) => {
@@ -177,6 +245,7 @@ function showBooks(books) {
     title.textContent = book.title;
     author.textContent = `저자: ${book.author}`;
     price.textContent = formatPrice(book.price);
+    addBookCover(card, book);
     card.append(title, author, price, createPurchaseControls(book));
     bookList.append(card);
   });
