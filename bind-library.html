@@ -24,7 +24,7 @@ a{color:inherit}.shell{max-width:1460px;margin:auto;padding:32px 30px 80px}.top{
 </style></head><body>
 <div class="shell"><div class="top"><span class="wordmark">BIND / CONTENT PICK</span><a class="back" href="./index.html">madang 돌아가기 ↗</a></div>
 <header class="hero"><div><h1>재고 상품 이미지 라이브러리</h1><p>브랜드와 카테고리만 선택하면 상품 이미지가 펼쳐지는 콘텐츠 기획용 갤러리</p></div>
-<div class="demo"><strong>데모 모드</strong> · ERP SQL 및 상품 이미지 매칭은 아직 연결하지 않았습니다. 아래 재고·가격·품번·상품명은 가상 데이터이며, 사진은 실제 브랜드 상품이 아닌 의류 예시 이미지입니다. 인스타 콘텐츠에 그대로 사용하지 마세요.</div></header>
+<div class="demo"><strong>데모 모드</strong> · ERP 재고는 미연동입니다. 실제 JEEP 공식몰에서 확인한 상품명·품번·상세페이지를 사용하며, 대표 이미지를 외부 메타데이터로 불러오는 실험입니다. 이미지가 안 보이면 원본 페이지를 확인하세요. 콘텐츠 사용 권한은 별도 확인이 필요합니다.</div></header>
 <div class="layout">
 <aside class="sidebar">
 <section class="panel"><h2 class="s-title">카테고리</h2><div class="category-list" id="categoryList"></div></section>
@@ -32,34 +32,33 @@ a{color:inherit}.shell{max-width:1460px;margin:auto;padding:32px 30px 80px}.top{
 </aside>
 <main class="main">
 <div class="toolbar"><div><div class="toolbar-title" id="currentTitle">전체 상품</div><span class="small" id="resultInfo">불러오는 중</span></div>
-<div class="controls"><input id="keyword" type="search" placeholder="상품명·품번 검색" aria-label="상품명 품번 검색"><select id="stockFilter" aria-label="재고 필터"><option value="1">재고 1개 이상</option><option value="10">재고 10개 이상</option><option value="30">재고 30개 이상</option><option value="50">재고 50개 이상</option></select><select id="sort" aria-label="정렬"><option value="stock">재고 많은 순</option><option value="brand">브랜드명 순</option><option value="price">가격 높은 순</option></select><button type="button" class="plain-btn" id="reset">초기화</button></div></div>
+<div class="controls"><input id="keyword" type="search" placeholder="상품명·품번 검색" aria-label="상품명 품번 검색"><select id="stockFilter" aria-label="재고 필터" disabled title="ERP 연결 이후 활성화"><option value="1">재고 연동 전</option><option value="10">재고 10개 이상</option><option value="30">재고 30개 이상</option><option value="50">재고 50개 이상</option></select><select id="sort" aria-label="정렬"><option value="stock">품번 순</option><option value="brand">브랜드명 순</option><option value="price">가격 높은 순</option></select><button type="button" class="plain-btn" id="reset">초기화</button></div></div>
 <div class="grid" id="grid"></div><div class="bottom" id="moreArea"><button type="button" id="more">더 보기</button></div>
 </main></div>
 <div class="selection" id="selection" hidden><strong id="selectionCount">선택된 상품 0개</strong><div><button class="ghost" id="clearSelection" type="button">선택 해제</button> <button id="download" type="button">선택 상품 CSV 다운로드</button></div></div>
 </div>
 <script>
 const BRANDS=[{"name":"9999ARCHIVE","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/9999archive.svg"},{"name":"ambler","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ambler.svg"},{"name":"ames","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ames.svg"},{"name":"avandress","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/avandress.svg"},{"name":"bendavis","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/bendavis.svg"},{"name":"bp2-disorder","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/bp2-disorder.svg"},{"name":"cavish","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/cavish.svg"},{"name":"code-graphy","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/code-graphy.svg"},{"name":"compagno","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/compagno.svg"},{"name":"covernat","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/covernat.svg"},{"name":"dandel","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/dandel.svg"},{"name":"dimitri-black","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/dimitri-black.svg"},{"name":"ESCAPEFROM","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ESCAPEFROM.svg"},{"name":"Fallet","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/Fallett.svg"},{"name":"Fancy Club","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/fancy-club.svg"},{"name":"fdr","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/fdr.svg"},{"name":"ghost republic","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ghost-republic.svg"},{"name":"free mario","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/free-mario.svg"},{"name":"hanes","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/hanes.svg"},{"name":"jeep","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/jeep.svg"},{"name":"kims","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/kims.svg"},{"name":"lee","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/lee.svg"},{"name":"lenee b","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/lenee-b.svg"},{"name":"lmr","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/lmr.svg"},{"name":"mainbooth","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/mainbooth.svg"},{"name":"MASMARULEZ","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/MASMARULEZ.svg"},{"name":"MUCENT","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/MUCENT.svg"},{"name":"mydeepblue","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/mydeepblue.svg"},{"name":"neikidnis","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/neikidnis.svg"},{"name":"nomanual","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/nomanual.svg"},{"name":"obsker","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/obsker.svg"},{"name":"odd pearl","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/oddpearl.svg"},{"name":"ogarp","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ogarp.svg"},{"name":"ordinary holiday","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ORDINARY-HOLIDAY.svg"},{"name":"PAGESIISII","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/PAGESIISII.svg"},{"name":"phypsdept","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/phypsdept.svg"},{"name":"RUNNINGHIGH","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/RUNNINGHIGH.svg"},{"name":"SANRIN","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/SANRIN.svg"},{"name":"SECONDSALT","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/SECONDSALT.svg"},{"name":"SORANO","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/SORANO.svg"},{"name":"STOCKHOLM SYNDROME","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/STOCKHOLM-SYNDROME.svg"},{"name":"TANSANMAGNESIUM","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/TANSANMAGNESIUM.svg"},{"name":"THRASHER","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/THRASHER.svg"},{"name":"ticket to the moon","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/ticket-to.svg"},{"name":"video","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/video.svg"},{"name":"VIVACIOUS","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/VIVACIOUS.svg"},{"name":"wacky willy","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/wacky-willy.svg"},{"name":"wednesday","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/wednesday.svg"},{"name":"yale","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/yale.svg"},{"name":"YOSEMITE","logo":"https://www.inthef.co.kr/images/brand/bind/brand_logo/YOSEMITE.svg"}];
-const IMAGES={"바지":["https://images.unsplash.com/photo-1754555009601-498e9873197e?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1714143164072-7646ef5cb24d?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1714143136367-7bb68f3f0669?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=600&q=80"],"아우터":["https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=600&q=80"],"상의":["https://images.unsplash.com/photo-1693901257178-b5fcb8f036a8?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=600&q=80"],"원피스":["https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&q=80"],"잡화":["https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80","https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80"]};
-const PRODUCT_NAMES={"바지":["와이드 데님 팬츠","카고 팬츠","코튼 스트레이트 팬츠","워싱 데님 팬츠"],"아우터":["라이트 다운 점퍼","나일론 윈드브레이커","캐주얼 재킷"],"상의":["로고 스웨트셔츠","베이직 반팔 티셔츠","집업 후디"],"원피스":["캐주얼 원피스"],"잡화":["캔버스 백","데일리 액세서리"]};
-const CATEGORIES=["전체","바지","아우터","상의","원피스","잡화"];
-// 데이터와 이미지가 외부에서 이미 매칭되어 있다는 가정의 가상 샘플.
-// 실제 연동 시 이 배열을 ERP SQL 스냅샷 + 승인된 이미지 매핑 결과로 교체합니다.
-const ITEMS=BRANDS.flatMap((b,bi)=>["바지","아우터","상의","잡화"].map((category,ci)=>{
- const names=PRODUCT_NAMES[category],images=IMAGES[category];
- return {id:bi*10+ci+1,brand:b.name,logo:b.logo,category,
- name:names[(bi+ci)%names.length],sku:"DEMO-"+String(bi+1).padStart(2,"0")+"-"+String(ci+1).padStart(2,"0"),
- stock:((bi*17+ci*13+11)%74)+1,price:(Math.floor(((bi*11+ci*7)%16+3)*9900/1000)*1000),
- image:images[(bi+ci)%images.length],source:"샘플 이미지 · 실제 상품 매칭 아님"};}));
+// 실제 공식몰 상품 페이지 기반의 이미지 연결 테스트.
+// 이미지 파일 주소를 추측하거나 일반 의류 사진으로 대체하지 않습니다.
+// 메타데이터 제공 서비스가 상품 페이지의 대표 이미지를 읽어 반환합니다.
+// 무료 API 이용량 제한/공식몰 차단으로 미표시될 수 있습니다.
+const ITEMS=[{"id":1,"brand":"jeep","category":"아우터","name":"배색 라이트 다운 점퍼","sku":"JR4JPU491DG","stock":23,"price":0,"image":"","source":"https://jeepwear.co.kr/product/%eb%b0%b0%ec%83%89-%eb%9d%bc%ec%9d%b4%ed%8a%b8-%eb%8b%a4%ec%9a%b4-%ec%a0%90%ed%8d%bc-jr4jpu491dg/5258/","verified":true},{"id":2,"brand":"jeep","category":"아우터","name":"배색 라이트 다운 점퍼","sku":"JR4JPU491LE","stock":12,"price":0,"image":"","source":"https://jeepwear.co.kr/product/%eb%b0%b0%ec%83%89-%eb%9d%bc%ec%9d%b4%ed%8a%b8-%eb%8b%a4%ec%9a%b4-%ec%a0%90%ed%8d%bc-jr4jpu491le/5257/","verified":true},{"id":3,"brand":"jeep","category":"아우터","name":"라운드 사시 더블넥 후드 점퍼","sku":"JR4JPU492GR","stock":12,"price":0,"image":"","source":"https://jeepwear.co.kr/product/search.html?keyword=JR4JPU492GR","verified":false},{"id":4,"brand":"jeep","category":"상의","name":"후로피 지프로고 후드티셔츠","sku":"JR3THU031DG","stock":12,"price":0,"image":"","source":"https://jeepwear.co.kr/product/search.html?keyword=JR3THU031DG","verified":false},{"id":5,"brand":"jeep","category":"아우터","name":"레터링자수 포켓 패딩점퍼","sku":"JR4JPU250DK","stock":12,"price":0,"image":"","source":"https://jeepwear.co.kr/product/search.html?keyword=JR4JPU250DK","verified":false}];
+for (const p of ITEMS) {
+  p.image = p.verified
+    ? "https://api.microlink.io/?url="+encodeURIComponent(p.source)+"&embed=image.url"
+    : "";
+}
 let selectedBrand="전체",selectedCategory="전체",visible=24;
 const picked=new Set();
 const q=id=>document.getElementById(id);
 const won=n=>new Intl.NumberFormat("ko-KR").format(n)+"원";
 function filterItems(){
  const term=q("keyword").value.trim().toLocaleLowerCase();
- const min=Number(q("stockFilter").value);
- const filtered=ITEMS.filter(x=>(selectedBrand==="전체"||x.brand===selectedBrand)&&(selectedCategory==="전체"||x.category===selectedCategory)&&x.stock>=min&&(!term||(x.name+" "+x.sku+" "+x.brand).toLocaleLowerCase().includes(term)));
+ const min=0;
+ const filtered=ITEMS.filter(x=>(selectedBrand==="전체"||x.brand===selectedBrand)&&(selectedCategory==="전체"||x.category===selectedCategory)&&(!term||(x.name+" "+x.sku+" "+x.brand).toLocaleLowerCase().includes(term)));
  const sort=q("sort").value;
- filtered.sort((a,b)=>sort==="brand"?a.brand.localeCompare(b.brand):sort==="price"?b.price-a.price:b.stock-a.stock);
+ filtered.sort((a,b)=>sort==="brand"?a.brand.localeCompare(b.brand):a.sku.localeCompare(b.sku));
  return filtered;
 }
 function element(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
@@ -75,18 +74,18 @@ function renderFilters(){
 }
 function renderCards(){
  const items=filterItems();q("currentTitle").textContent=(selectedCategory==="전체"?"전체 상품":selectedCategory)+(selectedBrand==="전체"?"":" · "+selectedBrand);
- q("resultInfo").textContent=items.length+"개 상품 · ERP 연동 전 가상 샘플";
+ q("resultInfo").textContent=items.length+"개 공식몰 등록 상품 · 재고 미연동 · 이미지 연결 시험";
  const grid=q("grid");grid.replaceChildren();
- if(!items.length)grid.append(element("div","empty","조건에 맞는 상품이 없습니다."));
+ if(!items.length)grid.append(element("div","empty","확인된 실제 상품 이미지 데이터가 아직 없습니다. 가상의 상품 사진은 표시하지 않습니다."));
  for(const p of items.slice(0,visible)){
  const card=element("article","product");
  const photo=element("div","photo"),img=document.createElement("img");
- img.loading="lazy";img.alt="샘플 의류 사진 (실제 "+p.brand+" 상품 아님)";
+ img.loading="lazy";img.alt=p.name+" · "+p.sku+" (공식몰 상품 이미지 자동 연결 시도)";
  const fallback=element("div","photo-fallback","이미지를 불러올 수 없습니다");
  img.onerror=()=>{img.style.display="none";fallback.style.display="flex";};
- img.src=p.image;photo.append(img,fallback,element("span","stock-badge","가상 재고 "+p.stock));
+ img.src=p.image;photo.append(img,fallback,element("span","stock-badge","재고 미연동));
  const info=element("div","info");
- info.append(element("div","brand",p.brand),element("div","product-name",p.name),element("div","detail",p.category+" · "+p.sku),element("div","price",won(p.price)));
+ info.append(element("div","brand",p.brand.toUpperCase()),element("div","product-name",p.name),element("div","detail",p.category+" · "+p.sku));const source=document.createElement("a");source.href=p.source;source.target="_blank";source.rel="noopener noreferrer";source.className="small";source.textContent="공식몰 상품 확인 ↗";info.append(source);
  const actions=element("div","card-actions"),pick=element("button","pick"+(picked.has(p.id)?" saved":""),picked.has(p.id)?"✓ 콘텐츠 후보 선택됨":"＋ 콘텐츠 후보 담기");
  pick.type="button";pick.onclick=()=>{if(picked.has(p.id))picked.delete(p.id);else picked.add(p.id);renderCards();};
  actions.append(pick);info.append(actions);card.append(photo,info);grid.append(card);
@@ -102,7 +101,7 @@ q("reset").onclick=()=>{selectedCategory="전체";selectedBrand="전체";visible
 q("clearSelection").onclick=()=>{picked.clear();renderCards();};
 q("download").onclick=()=>{
  const rows=ITEMS.filter(x=>picked.has(x.id)),header=["브랜드","카테고리","상품명","품번","재고(가상)","가격(가상)","샘플이미지URL","구분"];
- const csv=[header,...rows.map(x=>[x.brand,x.category,x.name,x.sku,x.stock,x.price,x.image,"가상 샘플"])]
+ const csv=[header,...rows.map(x=>[x.brand,x.category,x.name,x.sku,"미연동","미연동",x.image,"공식몰 이미지 URL 테스트"])]
  .map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\r\n");
  const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
  a.href=url;a.download="bind_content_demo_selection.csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
