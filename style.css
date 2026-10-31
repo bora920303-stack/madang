@@ -243,3 +243,13 @@ button:hover {
   .order-card { grid-template-columns: 1fr; }
   .order-amount { grid-column: auto; grid-row: auto; }
 }
+
+/* Supabase Storage 도서 표지 이미지 */
+.book-cover-wrapper { width: 100%; aspect-ratio: 4 / 3; margin-bottom: 16px; background: #f1f5f9; border-radius: 10px; overflow: hidden; display: grid; place-items: center; }
+.book-cover { width: 100%; height: 100%; object-fit: contain; }
+.book-cover-placeholder { padding: 16px; color: #94a3b8; text-align: center; font-size: 0.88rem; }
+.cover-upload { margin-top: 16px; display: grid; gap: 8px; }
+.cover-upload label { font-size: 0.82rem; font-weight: 700; color: #475569; }
+.cover-upload input { width: 100%; min-height: 0; padding: 7px; font-size: 0.85rem; }
+.cover-upload button { min-height: 36px; font-size: 0.88rem; }
+.cover-upload-message { margin: 0; color: #475569; font-size: 0.82rem; overflow-wrap: anywhere; }
