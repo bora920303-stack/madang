@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>외부 상품 이미지 연결 테스트 | madang</title>
+<link rel="stylesheet" href="./style.css">
+<style>
+.test-container{max-width:920px;margin:0 auto;padding:40px 18px}
+.test-panel{background:#fff;border:1px solid #dce3ed;border-radius:15px;padding:24px;margin:18px 0}
+.preview{min-height:270px;background:#f1f5f9;display:grid;place-items:center;border-radius:12px;overflow:hidden;margin:15px 0}
+.preview img{display:block;max-width:100%;max-height:460px;object-fit:contain}
+.preview p{color:#64748b;padding:20px;text-align:center}
+.grid-test{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.test-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.test-actions input{width:100%}
+.note{font-size:13px;color:#64748b;line-height:1.6}
+#testStatus{white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:650px){.grid-test{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="test-container">
+<a href="./index.html">← madang 도서 목록으로 돌아가기</a>
+<header class="page-header"><p class="eyebrow">IMAGE LINK TEST</p><h1>외부 상품 이미지 테스트</h1>
+<p>상품명·품번으로 검색한 외부 이미지를 URL로 연결해 브라우저에 표시하는 실습 페이지입니다.</p></header>
+<section class="test-panel">
+<h2>1. 실제 외부 이미지 주소 연결</h2>
+<p class="note">아래 샘플은 해외 쇼핑몰에 게시된 JEEP 상품 사진으로, 앞서 검색한 ‘배색 라이트 다운 점퍼 (JR4JPU491LE)’와 <strong>다른 품번(JQ4JPU491)</strong>입니다. 이미지 URL 연결 방식만 시험합니다. BIND 재고와 일치하는 상품이라는 뜻이 아닙니다.</p>
+<div class="grid-test">
+<div><label for="productName">상품명</label><input id="productName" value="JEEP 이미지 URL 연결 테스트" /><label for="productCode">품번(비교용)</label><input id="productCode" value="JQ4JPU491 (샘플)" /></div>
+<div><label for="imageUrl">외부 이미지 URL</label><input id="imageUrl" type="url" spellcheck="false" placeholder="https://...jpg" />
+<div class="test-actions"><button id="loadSample" type="button">샘플 이미지 불러오기</button><button id="loadCustom" type="button" class="secondary-button">입력 URL 테스트</button></div></div>
+</div>
+<div class="preview" id="preview"><p>버튼을 누르면 외부 이미지를 불러옵니다.</p></div>
+<p id="testStatus" role="status" class="note"></p>
+<p class="note">원본 출처: <a href="https://weare.shopping/products/we-are-%E9%9F%93%E5%9C%8Bjeep%E4%BC%91%E9%96%92%E7%87%88%E8%8A%AF%E7%B5%A8%E7%BE%BD%E7%B5%A8%E6%9C%8D%E5%A4%96%E5%A5%97jq4jpu491" target="_blank" rel="noopener noreferrer">외부 샘플 이미지 출처</a> · 이 페이지는 테스트용이며 이미지 파일을 다운로드하거나 재배포하지 않습니다.</p>
+</section>
+<section class="test-panel"><h2>2. 품번이 정확히 일치하는 상품 확인</h2>
+<p>JEEP 공식몰에서 <strong>배색 라이트 다운 점퍼 (JR4JPU491LE)</strong> 상품을 확인할 수 있습니다. 공식몰 상품 상세페이지와 이미지 파일 직접 URL은 서로 다릅니다.</p>
+<a href="https://jeepwear.co.kr/product/%EB%B0%B0%EC%83%89-%EB%9D%BC%EC%9D%B4%ED%8A%B8-%EB%8B%A4%EC%9A%B4-%EC%A0%90%ED%8D%BC-jr4jpu491le/5257/" target="_blank" rel="noopener noreferrer">JEEP 공식몰 상품 상세페이지 열기</a>
+<p class="note">ERP 품번과 일치하는 상품을 찾은 뒤 대표 이미지의 직접 URL을 확보하면, 위 입력창에 넣어 별도로 검증할 수 있습니다. 일부 쇼핑몰은 외부 이미지 연결을 차단합니다.</p>
+</section>
+</main>
+<script>
+const SAMPLE_IMAGE="https://weare.shopping/cdn/shop/files/f0ffeb2ea5e10c6e5974438d5e5e1cf1.jpg?v=1763788773";
+const preview=document.querySelector("#preview");
+const status=document.querySelector("#testStatus");
+const imageUrl=document.querySelector("#imageUrl");
+function loadImage(url){
+  let parsed;
+  try{parsed=new URL(url);if(!["http:","https:"].includes(parsed.protocol))throw Error("HTTP(S) 이미지 주소를 입력하세요.");}
+  catch(e){status.textContent="URL 오류: "+e.message;return;}
+  preview.replaceChildren();
+  const loading=document.createElement("p");loading.textContent="이미지 로딩 중…";preview.append(loading);
+  status.textContent="연결 시도: "+parsed.href;
+  const image=new Image();image.alt="외부 쇼핑몰 상품 이미지";image.referrerPolicy="no-referrer";
+  image.onload=()=>{preview.replaceChildren(image);status.textContent="외부 이미지 표시 성공 · "+image.naturalWidth+"×"+image.naturalHeight+"px";};
+  image.onerror=()=>{loading.textContent="이미지를 표시하지 못했습니다.";status.textContent="이미지 링크가 잘못되었거나 외부 사이트에서 연결을 차단했을 수 있습니다. 상품 상세페이지 주소가 아닌 직접 이미지 URL인지 확인하세요.";};
+  image.src=parsed.href;
+}
+document.querySelector("#loadSample").addEventListener("click",()=>{imageUrl.value=SAMPLE_IMAGE;loadImage(SAMPLE_IMAGE);});
+document.querySelector("#loadCustom").addEventListener("click",()=>loadImage(imageUrl.value.trim()));
+</script></body></html>
