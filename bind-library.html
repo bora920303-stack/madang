@@ -1,10 +1,10 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BIND | 재고 상품 이미지 라이브러리</title><style>
 :root{font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Malgun Gothic",sans-serif;color:#171a20;background:#f7f7f7;font-synthesis:none}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1400px;margin:auto;padding:27px 28px 80px}.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:3px 0 30px}.logo{font-size:16px;font-weight:850;letter-spacing:.22em}.nav a{font-size:12px;color:#69717c}.heading{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:24px}h1{font-size:clamp(28px,4vw,44px);margin:0 0 12px;letter-spacing:-.06em}p{margin:0;color:#6b727b;line-height:1.65}.notice{font-size:12px;background:#fff;border:1px solid #e7e8ea;padding:12px 14px;border-radius:9px;max-width:370px;line-height:1.7}.notice strong{color:#20242b}.layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:20px}.aside{display:flex;flex-direction:column;gap:14px}.panel,.bar{background:white;border:1px solid #e8e8e8;border-radius:12px}.panel{padding:18px}.label{font-size:12px;font-weight:780;margin-bottom:12px}.filter-list{display:grid;gap:4px}.filter{border:0;background:transparent;border-radius:8px;padding:10px 12px;text-align:left;display:flex;justify-content:space-between;color:#555e6a;font-size:13px}.filter:hover{background:#f1f2f4}.filter.active{background:#202631;color:white}.filter span{opacity:.65}.search{width:100%;border:1px solid #e2e5e9;border-radius:8px;padding:12px;outline:none;background:white;font-size:13px}.search:focus{border-color:#48536a}.bar{padding:19px;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:18px}.bar-title{font-size:20px;font-weight:790;letter-spacing:-.035em}.sub{font-size:12px;color:#7a818a;margin-top:5px}.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.controls select,.controls button{border:1px solid #dedfe3;background:#fff;border-radius:8px;padding:10px;font-size:12px}.controls button:hover{background:#f1f2f4}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.item{min-width:0;background:white;border:1px solid #e7e8eb;border-radius:12px;overflow:hidden}.imglink{display:block;position:relative;aspect-ratio:3/4;background:#f1f1f2}.imglink:hover img{transform:scale(1.025)}.imglink img{height:100%;width:100%;object-fit:contain;display:block;transition:transform .25s}.tag{position:absolute;left:11px;top:11px;border-radius:5px;padding:7px 8px;background:#e8f7ec;color:#196c37;font-size:11px;font-weight:800}.missing{display:none;align-items:center;justify-content:center;position:absolute;inset:0;color:#6b7280;text-align:center;padding:14px;font-size:12px;background:#f1f1f2}.info{padding:16px}.brand{font-size:11px;letter-spacing:.1em;font-weight:850}.name{font-size:14px;font-weight:700;line-height:1.45;margin:10px 0 9px;min-height:40px;display:block}.sku{font-size:12px;color:#5b6573;margin:5px 0}.meta{font-size:11px;color:#74808e;margin-top:7px}.rule{height:1px;background:#edf0f2;margin:12px 0}.row{display:flex;gap:8px}.linkbtn,.selectbtn{display:flex;justify-content:center;align-items:center;flex:1;border:1px solid #dadde2;border-radius:7px;padding:10px 5px;font-size:12px;font-weight:680}.linkbtn{background:#202631;color:white;border-color:#202631}.linkbtn:hover{text-decoration:none;background:#394252}.selectbtn{background:#fff}.selectbtn.selected{color:#fff;background:#3c4656}.empty{grid-column:1/-1;border:1px dashed #ccd0d6;background:white;text-align:center;padding:65px 20px;color:#65707c;border-radius:12px}.foot{margin-top:23px;color:#77818c;font-size:12px;line-height:1.65}.selection{position:sticky;bottom:15px;margin-top:18px;background:#202631;color:white;border-radius:12px;padding:12px 17px;display:flex;align-items:center;gap:14px;justify-content:space-between;box-shadow:0 12px 35px #0002}.selection[hidden]{display:none}.selection button{background:white;border:0;border-radius:7px;font-size:12px;padding:10px 12px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 18px}.chip{border:1px solid #dedfe3;background:#fff;border-radius:99px;padding:9px 13px;font-size:12px}.chip.active{background:#202631;color:white;border-color:#202631}.error-note{font-size:11px;color:#a05b18;margin-top:9px}
 @media(max-width:1050px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:205px minmax(0,1fr)}}@media(max-width:700px){.wrap{padding:18px 13px 60px}.heading{display:block}.notice{margin-top:16px;max-width:none}.layout{grid-template-columns:1fr}.aside{display:grid;grid-template-columns:1fr 1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.info{padding:12px}.bar{padding:14px}.controls{width:100%}.controls select{flex:1}.name{font-size:12px}.row{flex-wrap:wrap}.linkbtn,.selectbtn{font-size:11px}}@media(max-width:380px){.aside{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
-</style></head><body>
+.file-btn{display:inline-block;cursor:pointer;background:#202631;color:#fff;padding:10px 13px;border-radius:8px;font-size:12px}.file-btn:hover{background:#394252}.tag.review{background:#fff1d7;color:#875a08}.tag.missing-tag{background:#e6e8ed;color:#515965}</style></head><body>
 <div class="wrap"><div class="nav"><div class="logo">BIND / CONTENT LIBRARY</div><a href="./index.html">madang 홈으로 ↗</a></div>
-<header class="heading"><div><h1>재고 상품 이미지 라이브러리</h1><p>ERP에 아래 3개 상품이 등록되어 있다고 가정한 실물 이미지 연동 테스트</p></div><div class="notice"><strong>실제 브랜드몰 이미지 연결</strong><br>이미지는 JEEP·AMBLER 공식몰의 상품 이미지 URL을 직접 사용합니다. ERP 재고 수량·판매가는 미연동이고, 자동 수집이나 50개 브랜드 전체 상품 매칭은 아직 구현되지 않았습니다.</div></header>
-<div class="layout"><aside class="aside">
+<header class="heading"><div><h1>재고 상품 이미지 라이브러리</h1><p>Python에서 수집한 공식몰 상품 이미지 URL을 CSV로 불러오는 갤러리</p></div><div class="notice"><strong>실제 브랜드몰 이미지 연결</strong><br>공식몰 이미지 파일은 저장하지 않고 URL만 사용합니다. 수집 결과의 일치 여부를 그대로 표시하며, ERP 재고·가격은 아직 연결하지 않았습니다.</div></header>
+<div class="bar"><div style="flex:1"><div class="bar-title">Python 수집 결과 연결</div><div class="sub">기본 예시 CSV를 자동으로 읽습니다. 로컬에서 수집한 최신 results.csv를 선택하면 즉시 교체됩니다.</div></div><div class="controls"><label class="file-btn" for="csvFile">results.csv 파일 불러오기</label><input type="file" id="csvFile" accept=".csv,text/csv" style="display:none"><button type="button" id="reloadCSV">기본 CSV 다시 읽기</button></div><div id="importInfo" class="sub" style="width:100%" aria-live="polite">CSV 불러오는 중...</div></div><div class="layout"><aside class="aside">
 <div class="panel"><div class="label">카테고리</div><div class="filter-list" id="categories"></div></div>
 <div class="panel"><div class="label">브랜드</div><div class="filter-list" id="brands"></div></div>
 </aside><main>
@@ -16,25 +16,89 @@
 <div class="selection" id="selection" hidden><strong id="selectionText"></strong><button id="export">선택 상품 CSV 다운로드</button></div>
 </div>
 <script>
-const PRODUCTS=[{"brand":"JEEP","sku":"JR4JPU492BK","category":"아우터","name":"라운드 사시 더블넥 후드 점퍼","color":"블랙","image":"https://jeepwear.co.kr/web/product/small/202610/e298448d1d060f6d27315cc9c0cf1013.jpg","url":"https://jeepwear.co.kr/product/%EB%9D%BC%EC%9A%B4%EB%93%9C-%EC%82%AC%EC%8B%9C-%EB%8D%94%EB%B8%94%EB%84%A5-%ED%9B%84%EB%93%9C-%EC%A0%90%ED%8D%BC-jr4dpu492bk/5278/category/254/display/1/","status":"confirmed","note":"공식몰 상세페이지에 ERP 품번 JR4JPU492BK 확인","other":"상품 페이지 URL에는 JR4DPU492BK로 표기되나 상세 상품명은 JR4JPU492BK"},{"brand":"JEEP","sku":"JR4JPU492GR","category":"아우터","name":"라운드 사시 더블넥 후드 점퍼","color":"그레이","image":"https://jeepwear.co.kr/web/product/small/202610/dbaa6b278f7de2864f30a5b3bfa0cf16.jpg","url":"https://jeepwear.co.kr/product/%EB%9D%BC%EC%9A%B4%EB%93%9C-%EC%82%AC%EC%8B%9C-%EB%8D%94%EB%B8%94%EB%84%A5-%ED%9B%84%EB%93%9C-%EC%A0%90%ED%8D%BC-jr4dpu492gr/5277/category/254/display/1/","status":"confirmed","note":"공식몰 상세페이지에 ERP 품번 JR4JPU492GR 확인","other":"상품 페이지 URL에는 JR4DPU492GR로 표기되나 상세 상품명은 JR4JPU492GR"},{"brand":"AMBLER","sku":"AP903","category":"바지","name":"Angel Star Patch 자수 원턱 스트링 와이드 스웨트 팬츠","color":"블랙","image":"https://amblerkorea.co.kr/web/product/big/202508/f514b8cafeec0bd3f2576784d1a3ffc5.jpg","url":"https://amblerkorea.co.kr/product/%EC%97%A0%EB%B8%94%EB%9F%AC-%EB%82%A8%EC%97%AC%EA%B3%B5%EC%9A%A9-angel-star-patch-%EC%9E%90%EC%88%98-%EC%9B%90%ED%84%B1-%EC%8A%A4%ED%8A%B8%EB%A7%81-%EC%99%80%EC%9D%B4%EB%93%9C-%EC%8A%A4%EC%9B%A8%ED%8A%B8-%ED%8C%AC%EC%B8%A0-ap903-%EB%B8%94%EB%9E%99/2253/","status":"confirmed","note":"공식몰 상품명·품번 AP903·블랙 확인","other":"원단 쭈리/기모 옵션은 상세페이지에서 확인"}];
-let currentBrand="전체",currentCategory="전체",currentStatus="all";const chosen=new Set();
-const $=id=>document.getElementById(id);const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
+const $=id=>document.getElementById(id);
+const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
+let PRODUCTS=[], currentBrand="전체",currentCategory="전체",currentStatus="all",dataSource="";const chosen=new Set();
+const KNOWN={
+ "JEEP|JR4JPU492BK":{name:"라운드 사시 더블넥 후드 점퍼",category:"아우터"},
+ "JEEP|JR4JPU492GR":{name:"라운드 사시 더블넥 후드 점퍼",category:"아우터"},
+ "AMBLER|AP903":{name:"Angel Star Patch 자수 원턱 스트링 와이드 스웨트 팬츠",category:"바지"}
+};
+function parseCSV(text){
+ text=text.replace(/^\uFEFF/,"");const rows=[];let row=[],field="",quote=false;
+ for(let i=0;i<text.length;i++){const ch=text[i];
+  if(quote){if(ch==='"'&&text[i+1]==='"'){field+='"';i++;}else if(ch==='"')quote=false;else field+=ch;}
+  else if(ch==='"')quote=true;
+  else if(ch===','){row.push(field);field="";}
+  else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&text[i+1]==='\n')i++;row.push(field);field="";if(row.some(x=>x.trim()))rows.push(row);row=[];}
+  else field+=ch;
+ }
+ row.push(field);if(row.some(x=>x.trim()))rows.push(row);
+ if(rows.length<2)throw Error("CSV에 데이터 행이 없습니다.");
+ const headers=rows.shift().map(x=>x.trim().toLowerCase());
+ for(const key of ["brand","sku","image_url","product_url","status"])if(!headers.includes(key))throw Error("CSV에 '"+key+"' 컬럼이 없습니다.");
+ return rows.map(cols=>Object.fromEntries(headers.map((h,i)=>[h,(cols[i]||"").trim()])));
+}
+function safeURL(value){try{const u=new URL(value);return ["https:","http:"].includes(u.protocol)?u.href:"";}catch{return "";}}
+function inferCategory(name){const s=name.toLowerCase();if(/팬츠|바지|데님|조거|슬랙스|스커트/.test(s))return "바지";if(/점퍼|자켓|재킷|패딩|코트|다운|아우터/.test(s))return "아우터";if(/티셔츠|셔츠|니트|후디|후드|스웨트/.test(s))return "상의";return "미분류";}
+function mapRow(row){
+ const brand=(row.brand||"").trim().toUpperCase(),sku=(row.sku||"").trim();if(!brand||!sku)return null;
+ const known=KNOWN[brand+"|"+sku.toUpperCase()]||{};
+ const name=row.product_name||row.name||known.name||sku;
+ const statusRaw=(row.status||"").toLowerCase(),image=safeURL(row.image_url),url=safeURL(row.product_url);
+ // The scraper's "image_found_needs_review" is never promoted to confirmed.
+ const status=!image||statusRaw.includes("error")||statusRaw.includes("missing")?"missing":
+ statusRaw.includes("needs_review")||statusRaw.includes("similar")?"similar":
+ statusRaw.includes("matched")&&statusRaw.includes("color")?"confirmed":"similar";
+ return {brand,sku,color:row.color||"",name,category:row.category||known.category||inferCategory(name),image,url,status,rawStatus:row.status||"",source:row.image_source||""};
+}
 function renderFilters(){
-for(const [id,values,current,set] of [["brands",["전체","JEEP","AMBLER"],currentBrand,v=>currentBrand=v],["categories",["전체","아우터","바지"],currentCategory,v=>currentCategory=v]]){
- const box=$(id);box.replaceChildren();for(const v of values){const btn=el("button","filter"+(v===current?" active":""),v);const n=PRODUCTS.filter(p=>v==="전체"||(id==="brands"?p.brand===v:p.category===v)).length;btn.append(el("span","",String(n)));btn.onclick=()=>{set(v);render();};box.append(btn);}}
+ for(const [id,values,current,set] of [
+  ["brands",["전체",...new Set(PRODUCTS.map(x=>x.brand))].sort((a,b)=>a==="전체"?-1:b==="전체"?1:a.localeCompare(b)),currentBrand,v=>currentBrand=v],
+  ["categories",["전체",...new Set(PRODUCTS.map(x=>x.category))],currentCategory,v=>currentCategory=v]]){
+ const box=$(id);box.replaceChildren();for(const v of values){const btn=el("button","filter"+(v===current?" active":""),v);btn.type="button";btn.append(el("span","",String(PRODUCTS.filter(p=>v==="전체"||(id==="brands"?p.brand===v:p.category===v)).length)));btn.onclick=()=>{set(v);render();};box.append(btn);}}
 }
 function getFiltered(){const term=$("query").value.trim().toLowerCase().replace(/\s+/g,"");return PRODUCTS.filter(p=>(currentBrand==="전체"||p.brand===currentBrand)&&(currentCategory==="전체"||p.category===currentCategory)&&(currentStatus==="all"||p.status===currentStatus)&&(!term||(p.brand+p.sku+p.name+p.color).toLowerCase().replace(/\s+/g,"").includes(term)));}
-function card(p){const art=el("article","item"),link=el("a","imglink");link.href=p.url;link.target="_blank";link.rel="noopener noreferrer";link.title="공식몰 상품 페이지 새 탭으로 열기";
-const img=document.createElement("img");img.src=p.image;img.alt=p.brand+" "+p.name+" "+p.color;img.loading="lazy";img.decoding="async";const fallback=el("div","missing","공식몰 이미지를 불러올 수 없습니다. 상품 페이지에서 확인하세요.");img.onerror=()=>{img.style.display="none";fallback.style.display="flex";};
-link.append(img,fallback,el("span","tag",p.status==="confirmed"?"✓ 공식몰 상품 확인":"검토 필요"));
-const body=el("div","info");body.append(el("div","brand",p.brand));const title=el("a","name",p.name);title.href=p.url;title.target="_blank";title.rel="noopener noreferrer";body.append(title,el("div","sku","품번 "+p.sku+" · "+p.color),el("div","meta",p.category+" · ERP 재고 미연동"));body.append(el("div","rule"));
-const row=el("div","row");const go=el("a","linkbtn","판매 페이지 ↗");go.href=p.url;go.target="_blank";go.rel="noopener noreferrer";const pick=el("button","selectbtn"+(chosen.has(p.sku)?" selected":""),chosen.has(p.sku)?"✓ 후보 담김":"+ 콘텐츠 후보");pick.onclick=()=>{chosen.has(p.sku)?chosen.delete(p.sku):chosen.add(p.sku);renderCards();};row.append(go,pick);body.append(row);const detail=el("div","error-note",p.other);if(p.other)body.append(detail);art.append(link,body);return art;}
-function renderCards(){const filtered=getFiltered();$("barTitle").textContent=(currentCategory==="전체"?"전체 상품":currentCategory)+(currentBrand==="전체"?"":" · "+currentBrand);$("count").textContent=filtered.length+"개 상품 · 공식몰 이미지 직접 연결 · ERP 재고 수량 미연동";
-const grid=$("grid");grid.replaceChildren();if(!filtered.length)grid.append(el("div","empty","해당 조건에 맞는 상품이 없습니다."));else filtered.forEach(p=>grid.append(card(p)));
-$("selection").hidden=chosen.size===0;$("selectionText").textContent=chosen.size+"개 콘텐츠 후보 선택됨";document.querySelectorAll(".chip").forEach(b=>b.classList.toggle("active",b.dataset.status===currentStatus));$("status").value=currentStatus;}
+function card(p){const art=el("article","item");
+ const link=el("a","imglink");if(p.url){link.href=p.url;link.target="_blank";link.rel="noopener noreferrer";link.title="공식몰 판매 페이지 새 탭 열기";}else{link.removeAttribute("href");link.title="상품 페이지 링크 미수집";}
+ const img=document.createElement("img");img.alt=p.brand+" "+p.name+" "+p.color;img.loading="lazy";img.decoding="async";
+ const fallback=el("div","missing",p.image?"외부 이미지 로딩 실패 · 공식몰에서 확인하세요":"이미지 미수집");
+ if(p.image){img.src=p.image;img.onerror=()=>{img.style.display="none";fallback.style.display="flex";};}else{img.style.display="none";fallback.style.display="flex";}
+ const tagText=p.status==="confirmed"?"✓ 품번·색상 확인":p.status==="similar"?"⚠ 추가 검토 필요":"이미지 미매칭";
+ link.append(img,fallback,el("span","tag"+(p.status==="similar"?" review":p.status==="missing"?" missing-tag":""),tagText));
+ const body=el("div","info");body.append(el("div","brand",p.brand));
+ const title=p.url?el("a","name",p.name):el("div","name",p.name);
+ if(p.url){title.href=p.url;title.target="_blank";title.rel="noopener noreferrer";}
+ body.append(title,el("div","sku","품번 "+p.sku+(p.color?" · "+p.color:"")),el("div","meta",p.category+" · 재고 데이터 미연동"),el("div","rule"));
+ const row=el("div","row");
+ if(p.url){const go=el("a","linkbtn","판매 페이지 ↗");go.href=p.url;go.target="_blank";go.rel="noopener noreferrer";row.append(go);}
+ const pick=el("button","selectbtn"+(chosen.has(p.brand+"|"+p.sku)?" selected":""),chosen.has(p.brand+"|"+p.sku)?"✓ 후보 담김":"+ 콘텐츠 후보");
+ pick.onclick=()=>{const k=p.brand+"|"+p.sku;chosen.has(k)?chosen.delete(k):chosen.add(k);renderCards();};row.append(pick);body.append(row);
+ if(p.status==="similar")body.append(el("div","error-note","실제 상품·색상 일치 여부를 판매 페이지에서 확인해야 합니다."));
+ art.append(link,body);return art;
+}
+function renderCards(){const items=getFiltered();$("barTitle").textContent=(currentCategory==="전체"?"전체 상품":currentCategory)+(currentBrand==="전체"?"":" · "+currentBrand);
+ $("count").textContent=items.length+"개 상품 · "+dataSource+" · ERP 재고 미연동";
+ const grid=$("grid");grid.replaceChildren();if(!items.length)grid.append(el("div","empty","표시할 상품이 없습니다."));else items.forEach(p=>grid.append(card(p)));
+ $("selection").hidden=chosen.size===0;$("selectionText").textContent=chosen.size+"개 콘텐츠 후보 선택됨";
+ document.querySelectorAll(".chip").forEach(b=>b.classList.toggle("active",b.dataset.status===currentStatus));$("status").value=currentStatus;
+}
 function render(){renderFilters();renderCards();}
+function applyCSV(csv,source){const rows=parseCSV(csv);const items=rows.map(mapRow).filter(Boolean);
+ if(!items.length)throw Error("유효한 상품 데이터가 없습니다.");
+ PRODUCTS=items;dataSource=source;chosen.clear();currentBrand="전체";currentCategory="전체";currentStatus="all";$("query").value="";
+ $("importInfo").textContent="불러온 파일: "+source+" · "+items.length+"개 상품 · 일치 "+items.filter(x=>x.status==="confirmed").length+"개 / 검토 "+items.filter(x=>x.status==="similar").length+"개 / 미매칭 "+items.filter(x=>x.status==="missing").length+"개";
+ render();
+}
+async function reloadDefault(){try{const res=await fetch("./bind-results.csv",{cache:"no-store"});if(!res.ok)throw Error("HTTP "+res.status);applyCSV(await res.text(),"저장소 기본 CSV");}catch(e){$("importInfo").textContent="기본 CSV 로딩 실패: "+e.message;}}
+$("csvFile").addEventListener("change",async e=>{const file=e.target.files?.[0];if(!file)return;try{applyCSV(await file.text(),file.name+" (로컬에서 불러옴)");}catch(err){$("importInfo").textContent="CSV 오류: "+err.message;}e.target.value="";});
+$("reloadCSV").onclick=reloadDefault;
 $("query").addEventListener("input",renderCards);$("status").addEventListener("change",e=>{currentStatus=e.target.value;renderCards();});
 document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{currentStatus=b.dataset.status;renderCards();});
 $("reset").onclick=()=>{currentBrand="전체";currentCategory="전체";currentStatus="all";$("query").value="";render();};
-$("export").onclick=()=>{const rows=PRODUCTS.filter(p=>chosen.has(p.sku));const cells=[["브랜드","카테고리","상품코드","상품명","색상","매칭상태","공식몰 상품링크","이미지URL"],...rows.map(p=>[p.brand,p.category,p.sku,p.name,p.color,"공식몰 상품 확인",p.url,p.image])];const csv=cells.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\r\n");const href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=href;a.download="BIND_ERP_3products_demo.csv";a.click();setTimeout(()=>URL.revokeObjectURL(href),1000);};render();
+$("export").onclick=()=>{const rows=PRODUCTS.filter(p=>chosen.has(p.brand+"|"+p.sku));const cells=[["브랜드","카테고리","상품코드","상품명","색상","매칭상태","판매페이지","이미지URL"],...rows.map(p=>[p.brand,p.category,p.sku,p.name,p.color,p.status,p.url,p.image])];
+ const csv=cells.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\r\n");
+ const href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"})),a=document.createElement("a");a.href=href;a.download="BIND_selected_products.csv";a.click();setTimeout(()=>URL.revokeObjectURL(href),1000);
+};
+reloadDefault();
 </script></body></html>
