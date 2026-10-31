@@ -170,25 +170,33 @@ function createPurchaseControls(book) {
 function addBookCover(card, book) {
   const wrapper = document.createElement("div");
   wrapper.className = "book-cover-wrapper";
-
-  const img = document.createElement("img");
-  img.className = "book-cover";
-  img.alt = `${book.title} 표지`;
-  // hidden 이미지에 lazy loading을 적용하면 로딩 자체가 시작되지 않을 수 있습니다.
-  img.loading = "eager";
-  img.hidden = true;
-
   const placeholder = document.createElement("p");
   placeholder.className = "book-cover-placeholder";
   placeholder.textContent = "등록된 도서 이미지가 없습니다.";
-
-  const { data } = sb.storage.from(BOOK_IMAGE_BUCKET).getPublicUrl(`covers/${book.id}`);
-  img.onload = () => { img.hidden = false; placeholder.hidden = true; };
-  img.onerror = () => { img.hidden = true; placeholder.hidden = false; };
-  // 같은 경로로 교체 업로드했을 때 캐시된 표지가 남지 않도록 합니다.
-  img.src = data.publicUrl;
-  wrapper.append(img, placeholder);
+  wrapper.append(placeholder);
   card.append(wrapper);
+
+  const path = `covers/${book.id}`;
+  const { data: publicData } = sb.storage.from(BOOK_IMAGE_BUCKET).getPublicUrl(path);
+
+  // 이미지가 실제로 로딩됐을 때만 빈 안내문을 이미지로 교체합니다.
+  // hidden 요소의 로딩 / 그리드 렌더링 문제를 피하도록 요소 자체를 교체합니다.
+  function showCover(url, errorMessage = null) {
+    const image = new Image();
+    image.className = "book-cover";
+    image.alt = `${book.title} 표지`;
+    image.loading = "eager";
+    image.onload = () => {
+      image.style.display = "block";
+      wrapper.replaceChildren(image);
+    };
+    image.onerror = () => {
+      wrapper.replaceChildren(placeholder);
+      if (errorMessage) errorMessage.textContent = "이미지를 저장했지만 표시하지 못했습니다. Storage 공개 설정을 확인해 주세요.";
+    };
+    image.src = url;
+  }
+  showCover(`${publicData.publicUrl}?v=${Date.now()}`);
 
   const upload = document.createElement("div");
   upload.className = "cover-upload";
@@ -217,25 +225,14 @@ function addBookCover(card, book) {
     message.textContent = "업로드 중입니다.";
     try {
       const { error } = await sb.storage.from(BOOK_IMAGE_BUCKET).upload(
-        `covers/${book.id}`, file, { upsert: true, contentType: file.type, cacheControl: "60" }
+        path, file, { upsert: true, contentType: file.type, cacheControl: "60" }
       );
       if (error) throw error;
-      // 파일 업로드와 브라우저 이미지 렌더링은 별개이므로 미리보기를 즉시 표시합니다.
-      const preview = URL.createObjectURL(file);
-      img.onload = () => {
-        img.hidden = false;
-        placeholder.hidden = true;
-        URL.revokeObjectURL(preview);
-      };
-      img.onerror = () => {
-        img.hidden = true;
-        placeholder.hidden = false;
-        URL.revokeObjectURL(preview);
-        message.textContent = "저장됐지만 이미지 미리보기를 표시하지 못했습니다.";
-      };
-      img.loading = "eager";
-      img.hidden = false;
-      img.src = preview;
+      // 저장 직후에는 브라우저가 선택한 원본으로 확실하게 미리보기를 표시합니다.
+      const reader = new FileReader();
+      reader.onload = () => showCover(reader.result, message);
+      reader.onerror = () => { message.textContent = "저장됐지만 미리보기 파일을 읽지 못했습니다."; };
+      reader.readAsDataURL(file);
       message.textContent = "이미지가 등록되었습니다.";
       input.value = "";
     } catch (error) {
