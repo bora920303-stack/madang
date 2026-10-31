@@ -174,7 +174,8 @@ function addBookCover(card, book) {
   const img = document.createElement("img");
   img.className = "book-cover";
   img.alt = `${book.title} 표지`;
-  img.loading = "lazy";
+  // hidden 이미지에 lazy loading을 적용하면 로딩 자체가 시작되지 않을 수 있습니다.
+  img.loading = "eager";
   img.hidden = true;
 
   const placeholder = document.createElement("p");
@@ -219,7 +220,22 @@ function addBookCover(card, book) {
         `covers/${book.id}`, file, { upsert: true, contentType: file.type, cacheControl: "60" }
       );
       if (error) throw error;
-      img.src = `${data.publicUrl}?v=${Date.now()}`;
+      // 파일 업로드와 브라우저 이미지 렌더링은 별개이므로 미리보기를 즉시 표시합니다.
+      const preview = URL.createObjectURL(file);
+      img.onload = () => {
+        img.hidden = false;
+        placeholder.hidden = true;
+        URL.revokeObjectURL(preview);
+      };
+      img.onerror = () => {
+        img.hidden = true;
+        placeholder.hidden = false;
+        URL.revokeObjectURL(preview);
+        message.textContent = "저장됐지만 이미지 미리보기를 표시하지 못했습니다.";
+      };
+      img.loading = "eager";
+      img.hidden = false;
+      img.src = preview;
       message.textContent = "이미지가 등록되었습니다.";
       input.value = "";
     } catch (error) {
