@@ -1,0 +1,4 @@
+brand,sku,color,product_url,http_status,sku_in_page,color_in_page,image_url,image_source,status
+JEEP,JR4JPU492BK,블랙,https://jeepwear.co.kr/product/detail.html?product_no=5278,200,,,https://jeepwear.co.kr/web/product/big/202610/7fcba913cfe49d2fda755854ca405fda.jpg,og:image,image_found_needs_review
+JEEP,JR4JPU492GR,그레이,https://jeepwear.co.kr/product/detail.html?product_no=5277,200,,,https://jeepwear.co.kr/web/product/big/202610/021847f3f02883c5b571baccbfaf22b7.jpg,og:image,image_found_needs_review
+AMBLER,AP903,블랙,https://amblerkorea.co.kr/product/detail.html?product_no=2253,200,true,true,https://amblerkorea.co.kr/web/product/big/202508/f514b8cafeec0bd3f2576784d1a3ffc5.jpg,og:image,sku_and_color_matched_image_found
