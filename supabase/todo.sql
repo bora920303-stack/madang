@@ -1,0 +1,26 @@
+-- Supabase SQL Editor에서 한 번 실행하세요.
+create extension if not exists pgcrypto;
+create table if not exists public.todo_teams(id uuid primary key default gen_random_uuid(),name text not null,invite_code text unique not null default encode(gen_random_bytes(12),'hex'),created_by uuid not null references auth.users(id),created_at timestamptz default now());
+create table if not exists public.todo_team_members(team_id uuid references public.todo_teams(id) on delete cascade,user_id uuid references auth.users(id) on delete cascade,primary key(team_id,user_id));
+create table if not exists public.todo_tasks(id uuid primary key default gen_random_uuid(),team_id uuid not null references public.todo_teams(id) on delete cascade,title text not null,status text not null default 'will' check(status in ('will','done')),created_by uuid not null references auth.users(id),created_at timestamptz default now());
+create table if not exists public.todo_posts(id uuid primary key default gen_random_uuid(),team_id uuid not null references public.todo_teams(id) on delete cascade,title text not null,body text not null,author_id uuid not null references auth.users(id),created_at timestamptz default now());
+create table if not exists public.todo_comments(id uuid primary key default gen_random_uuid(),post_id uuid not null references public.todo_posts(id) on delete cascade,body text not null,author_id uuid not null references auth.users(id),created_at timestamptz default now());
+create or replace function public.todo_is_member(t uuid) returns boolean language sql stable security definer set search_path='' as $$select exists(select 1 from public.todo_team_members where team_id=t and user_id=(select auth.uid()))$$;
+create or replace function public.todo_create_team(p_name text) returns uuid language plpgsql security definer set search_path='' as $$declare v uuid;begin if auth.uid() is null then raise exception 'Login required';end if;if length(trim(p_name))<1 then raise exception 'Name required';end if;insert into public.todo_teams(name,created_by) values(trim(p_name),auth.uid()) returning id into v;insert into public.todo_team_members values(v,auth.uid());return v;end$$;
+create or replace function public.todo_join_team(p_code text) returns uuid language plpgsql security definer set search_path='' as $$declare v uuid;begin if auth.uid() is null then raise exception 'Login required';end if;select id into v from public.todo_teams where invite_code=p_code;if v is null then raise exception 'Invalid invite code';end if;insert into public.todo_team_members values(v,auth.uid()) on conflict do nothing;return v;end$$;
+revoke all on function public.todo_create_team(text),public.todo_join_team(text) from public,anon;
+grant execute on function public.todo_create_team(text),public.todo_join_team(text) to authenticated;
+alter table public.todo_teams enable row level security;
+alter table public.todo_team_members enable row level security;
+alter table public.todo_tasks enable row level security;
+alter table public.todo_posts enable row level security;
+alter table public.todo_comments enable row level security;
+create policy "team read" on public.todo_teams for select to authenticated using(public.todo_is_member(id));
+create policy "members read" on public.todo_team_members for select to authenticated using(public.todo_is_member(team_id));
+create policy "tasks read" on public.todo_tasks for select to authenticated using(public.todo_is_member(team_id));
+create policy "tasks insert" on public.todo_tasks for insert to authenticated with check(public.todo_is_member(team_id) and created_by=auth.uid());
+create policy "tasks update" on public.todo_tasks for update to authenticated using(public.todo_is_member(team_id)) with check(public.todo_is_member(team_id));
+create policy "posts read" on public.todo_posts for select to authenticated using(public.todo_is_member(team_id));
+create policy "posts insert" on public.todo_posts for insert to authenticated with check(public.todo_is_member(team_id) and author_id=auth.uid());
+create policy "comments read" on public.todo_comments for select to authenticated using(exists(select 1 from public.todo_posts p where p.id=post_id and public.todo_is_member(p.team_id)));
+create policy "comments insert" on public.todo_comments for insert to authenticated with check(author_id=auth.uid() and exists(select 1 from public.todo_posts p where p.id=post_id and public.todo_is_member(p.team_id)));
